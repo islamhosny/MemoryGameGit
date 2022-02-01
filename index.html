@@ -165,5 +165,49 @@
     
   <!--SweetAlert Library-->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Select The Start Game Button
+document.querySelector(".control-buttons span").onclick = function () {
+    // Prompt Window To Ask For Name
+    let yourName = prompt("Whats Your Name?");
+    // If Name Is Empty
+    if (yourName == null || yourName == "") {
+      // Set Name To Unknown
+      document.querySelector(".name span").innerHTML = 'Unknown';
+    // Name Is Not Empty
+    } else {
+      // Set Name To Your Name
+      document.querySelector(".name span").innerHTML = yourName;
+    }
+    // Remove Splash Screen
+    document.querySelector(".control-buttons").remove();
+
+    // Timer 30 Seconds
+    function timer(){
+      var sec = 40;
+      var timer = setInterval(function(){
+          document.getElementById('safeTimerDisplay').innerHTML='00:'+sec;
+          sec--;
+
+          if (sec < 0) {
+              clearInterval(timer);
+              document.querySelector(".memory-game-blocks").style.pointerEvents = "none";
+
+              Swal.fire({
+                title: 'Game Over!',
+                text: 'The time is out, try again.',
+                footer: '<a href="index.html">Start</a>',
+                showConfirmButton: false,
+                imageUrl: 'image/alert.svg',
+                color:'#eae0d7',
+                background: 'rgb(201, 88, 23)'
+              })
+          }
+      }, 1000);
+  }
+
+  timer();
+  };
+  </script>
 </body>
 </html>
