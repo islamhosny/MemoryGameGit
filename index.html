@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Card Game</title>
+  <link rel="icon" href="image/favicon.jpg">
+
+</head>
+<body>
+  <!--Start Game Interface-->
+  <div class="control-buttons">
+    <p class="info">Playing memory games can improve other brain functions, such as attention, concentration, and focus. Memory games give space to critical thinking and that helps children nurture their attention to detail. </p>
+    <span>Start Game</span>
+  </div>
+    
+  <!--Inforamtion Bar-->
+  <div class="info-container">
+    <!-- Player Name -->
+    <div class="name">
+      <b>Player Name </b> <span></span>
+    </div>
+    <!-- Timer -->
+    <div>
+      <span id="safeTimerDisplay">00:40</span>
+    </div>
+    <!-- Wrong Tries Counter -->
+    <div class="tries">
+      <b>Wrong Tries  </b><span>0</span>
+    </div>
+  </div>
+
+  <!--Main Game-->
+  <div class="memory-game-blocks">
+    <!-- 1 Animal Card -->
+    <div class="game-block" data-animal="Panda">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Panda.jpg" alt="">
+      </div>
+    </div>
+    <div class="game-block" data-animal="Panda">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Panda.jpg" alt="">
+      </div>
+    </div>
+
+    <!-- 2 Animal Card -->
+    <div class="game-block" data-animal="Bear">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Bear.jpg" alt="">
+      </div>
+    </div>
+    <div class="game-block" data-animal="Bear">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Bear.jpg" alt="">
+      </div>
+    </div>
+
+    <!-- 3 Animal Card -->
+    <div class="game-block" data-animal="Tiger">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Tiger.jpg" alt="">
+      </div>
+    </div>
+    <div class="game-block" data-animal="Tiger">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Tiger.jpg" alt="">
+      </div>
+    </div>
+
+    <!-- 4 Animal Card -->
+    <div class="game-block" data-animal="Cat">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Cat.jpg" alt="">
+      </div>
+    </div>
+    <div class="game-block" data-animal="Cat">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Cat.jpg" alt="">
+      </div>
+    </div>
+
+    <!-- 5 Animal Card -->
+    <div class="game-block" data-animal="Whale">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Whale.jpg" alt="">
+      </div>
+    </div>
+    <div class="game-block" data-animal="Whale">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Whale.jpg" alt="">
+      </div>
+    </div>
+
+    <!-- 6 Animal Card -->
+    <div class="game-block" data-animal="Elephant">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Elephant.jpg" alt="">
+      </div>
+    </div>
+    <div class="game-block" data-animal="Elephant">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Elephant.jpg" alt="">
+      </div>
+    </div>
+
+    <!-- 7 Animal Card -->
+    <div class="game-block" data-animal="Pig">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Pig.jpg" alt="">
+      </div>
+    </div>
+    <div class="game-block" data-animal="Pig">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Pig.jpg" alt="">
+      </div>
+    </div>
+
+    <!-- 8 Animal Card -->
+    <div class="game-block" data-animal="Monkey">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Monkey.jpg" alt="">
+      </div>
+    </div>
+    <div class="game-block" data-animal="Monkey">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Monkey.jpg" alt="">
+      </div>
+    </div>
+
+    <!-- 9 Animal Card -->
+    <div class="game-block" data-animal="Penguin">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Penguin.jpg" alt="">
+      </div>
+    </div>
+    <div class="game-block" data-animal="Penguin">
+      <div class="face front"></div>
+      <div class="face back">
+        <img src="image/Penguin.jpg" alt="">
+      </div>
+    </div>
+  </div>
+
+  <!--Audio-->
+  <audio id="success" src="audio/success.wav" preload="auto"></audio>
+  <audio id="fail" src="audio/failed.mp3" preload="auto"></audio>
+    
+  <!--SweetAlert Library-->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
