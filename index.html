@@ -9,16 +9,18 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Mansalva&display=swap');
+
         * {
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Mansalva', cursive;
             background-image: url("image/background.png");
         }
+
         /* Strat Game */
-        
+
         .control-buttons {
             position: fixed;
             left: 0;
@@ -28,7 +30,7 @@
             z-index: 2;
             background-color: #252734bd
         }
-        
+
         .control-buttons span {
             position: absolute;
             left: 50%;
@@ -42,7 +44,7 @@
             border-radius: 35px;
             cursor: pointer;
         }
-        
+
         .control-buttons p {
             position: absolute;
             left: 50%;
@@ -56,8 +58,9 @@
             border-radius: 30px;
             cursor: pointer;
         }
+
         /*Player Info - Timer - Tries */
-        
+
         .info-container {
             width: 1080px;
             margin: 20px auto 0;
@@ -69,18 +72,18 @@
             border: 5px solid #252734;
             border-radius: 35px;
         }
-        
+
         .info-container .name {
             float: left;
             width: 50%;
         }
-        
+
         .info-container .tries {
             float: right;
             width: 20%;
             text-align: right;
         }
-        
+
         #safeTimerDisplay {
             float: right;
             width: 7%;
@@ -91,19 +94,20 @@
             background-color: rgb(201, 88, 23);
             text-align: center;
         }
+
         /* Main Game */
-        
+
         .memory-game-blocks {
             display: flex;
             width: 1500px;
             flex-wrap: wrap;
             margin: 150px auto;
         }
-        
+
         .memory-game-blocks.no-clicking {
             pointer-events: none;
         }
-        
+
         .memory-game-blocks .game-block {
             height: 200px;
             transition: transform .5s;
@@ -113,32 +117,32 @@
             flex: 1 0 200px;
             margin: 0 25px 20px;
         }
-        
+
         .memory-game-blocks .game-block .front {
             background-color: #252734;
             line-height: 200px;
         }
-        
+
         .memory-game-blocks .game-block .front:before {
             content: '!';
             color: #eae0d7;
             font-size: 140px;
             font-weight: bold;
         }
-        
+
         .memory-game-blocks .game-block .back {
             background-color: #607D8B;
             width: 200px;
             height: 200px;
             transform: rotateY(180deg);
         }
-        
+
         .memory-game-blocks .game-block .back img {
             width: 200px;
             height: 200px;
             border-radius: 20px;
         }
-        
+
         .memory-game-blocks .game-block .face {
             position: absolute;
             width: 200px;
@@ -147,7 +151,7 @@
             backface-visibility: hidden;
             border-radius: 35px;
         }
-        
+
         .memory-game-blocks .game-block.is-flipped,
         .memory-game-blocks .game-block.has-match {
             -webkit-transform: rotateY(180deg);
@@ -162,7 +166,9 @@
 <body>
     <!--Start Game Interface-->
     <div class="control-buttons">
-        <p class="info">Playing memory games can improve other brain functions, such as attention, concentration, and focus. Memory games give space to critical thinking and that helps children nurture their attention to detail. </p>
+        <p class="info">Playing memory games can improve other brain functions, such as attention, concentration, and
+            focus. Memory games give space to critical thinking and that helps children nurture their attention to
+            detail. </p>
         <span>Start Game</span>
     </div>
 
@@ -178,7 +184,7 @@
         </div>
         <!-- Wrong Tries Counter -->
         <div class="tries">
-            <b>Wrong Tries  </b><span>0</span>
+            <b>Wrong Tries </b><span>0</span>
         </div>
     </div>
 
@@ -320,7 +326,7 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Select The Start Game Button
-        document.querySelector(".control-buttons span").onclick = function() {
+        document.querySelector(".control-buttons span").onclick = function () {
             // Prompt Window To Ask For Name
             let yourName = prompt("Whats Your Name?");
             // If Name Is Empty
@@ -338,7 +344,7 @@
             // Timer 30 Seconds
             function timer() {
                 var sec = 40;
-                var timer = setInterval(function() {
+                var timer = setInterval(function () {
                     document.getElementById('safeTimerDisplay').innerHTML = '00:' + sec;
                     sec--;
 
@@ -380,7 +386,7 @@
             // Add CSS Order Property
             block.style.order = orderRange[index];
             // Add Click Event
-            block.addEventListener('click', function() {
+            block.addEventListener('click', function () {
                 // Trigger The Flip Block Function
                 flipBlock(block);
             });
@@ -400,6 +406,62 @@
                 // Check Matched Block Function
                 checkMatchedBlocks(allFlippedBlocks[0], allFlippedBlocks[1]);
             }
+        }
+
+
+        // Stop Clicking Function
+        function stopClicking() {
+            // Add Class No Clicking on Main Container
+            blocksContainer.classList.add('no-clicking');
+            // Wait Duration
+            setTimeout(() => {
+                // Remove Class No Clicking After The Duration
+                blocksContainer.classList.remove('no-clicking');
+            }, duration);
+        }
+
+        // Check Matched Block
+        function checkMatchedBlocks(firstBlock, secondBlock) {
+            let triesElement = document.querySelector('.tries span');
+
+            if (firstBlock.dataset.animal === secondBlock.dataset.animal) {
+                firstBlock.classList.remove('is-flipped');
+                secondBlock.classList.remove('is-flipped');
+
+                firstBlock.classList.add('has-match');
+                secondBlock.classList.add('has-match');
+
+                document.getElementById('success').play();
+            } else {
+                triesElement.innerHTML = parseInt(triesElement.innerHTML) + 1;
+                setTimeout(() => {
+                    firstBlock.classList.remove('is-flipped');
+                    secondBlock.classList.remove('is-flipped');
+                }, duration);
+                document.getElementById('fail').play();
+            }
+        }
+
+        // Shuffle Function
+        function shuffle(array) {
+            // Settings Vars
+            let current = array.length,
+                temp,
+                random;
+            while (current > 0) {
+                // Get Random Number
+                random = Math.floor(Math.random() * current);
+
+                //Decrease Length By One
+                current--;
+                //1. Saving Current Element in Stash
+                temp = array[current];
+                //2. Random Element replace Current Element
+                array[current] = array[random];
+                //3. Get Element From Stash
+                array[random] = temp;
+            }
+            return array;
         }
     </script>
 </body>
