@@ -1,213 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Memory Card Game</title>
-  <link rel="icon" href="image/favicon.jpg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+    <link rel="icon" href="image/favicon.jpg">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mansalva&display=swap');
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Mansalva', cursive;
+            background-image: url("image/background.png");
+        }
+        /* Strat Game */
+        
+        .control-buttons {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background-color: #252734bd
+        }
+        
+        .control-buttons span {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #c95817;
+            color: #eae0d7;
+            padding: 15px 25px;
+            font-size: 30px;
+            text-align: center;
+            border-radius: 35px;
+            cursor: pointer;
+        }
+        
+        .control-buttons p {
+            position: absolute;
+            left: 50%;
+            top: 30%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 139, 0);
+            color: #eae0d7;
+            padding: 15px 25px;
+            font-size: 42px;
+            text-align: center;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        /*Player Info - Timer - Tries */
+        
+        .info-container {
+            width: 1080px;
+            margin: 20px auto 0;
+            background-color: #252734;
+            padding: 20px;
+            font-size: 24px;
+            overflow: hidden;
+            color: #eae0d7;
+            border: 5px solid #252734;
+            border-radius: 35px;
+        }
+        
+        .info-container .name {
+            float: left;
+            width: 50%;
+        }
+        
+        .info-container .tries {
+            float: right;
+            width: 20%;
+            text-align: right;
+        }
+        
+        #safeTimerDisplay {
+            float: right;
+            width: 7%;
+            margin: 0px 0px 0px 10px;
+            padding: 0px 5px 0px 5px;
+            border: 5px solid rgb(201, 88, 23);
+            border-radius: 50px;
+            background-color: rgb(201, 88, 23);
+            text-align: center;
+        }
+        /* Main Game */
+        
+        .memory-game-blocks {
+            display: flex;
+            width: 1500px;
+            flex-wrap: wrap;
+            margin: 150px auto;
+        }
+        
+        .memory-game-blocks.no-clicking {
+            pointer-events: none;
+        }
+        
+        .memory-game-blocks .game-block {
+            height: 200px;
+            transition: transform .5s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            position: relative;
+            flex: 1 0 200px;
+            margin: 0 25px 20px;
+        }
+        
+        .memory-game-blocks .game-block .front {
+            background-color: #252734;
+            line-height: 200px;
+        }
+        
+        .memory-game-blocks .game-block .front:before {
+            content: '!';
+            color: #eae0d7;
+            font-size: 140px;
+            font-weight: bold;
+        }
+        
+        .memory-game-blocks .game-block .back {
+            background-color: #607D8B;
+            width: 200px;
+            height: 200px;
+            transform: rotateY(180deg);
+        }
+        
+        .memory-game-blocks .game-block .back img {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+        }
+        
+        .memory-game-blocks .game-block .face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            backface-visibility: hidden;
+            border-radius: 35px;
+        }
+        
+        .memory-game-blocks .game-block.is-flipped,
+        .memory-game-blocks .game-block.has-match {
+            -webkit-transform: rotateY(180deg);
+            -moz-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+            pointer-events: none;
+        }
+    </style>
 
 </head>
+
 <body>
-  <!--Start Game Interface-->
-  <div class="control-buttons">
-    <p class="info">Playing memory games can improve other brain functions, such as attention, concentration, and focus. Memory games give space to critical thinking and that helps children nurture their attention to detail. </p>
-    <span>Start Game</span>
-  </div>
-    
-  <!--Inforamtion Bar-->
-  <div class="info-container">
-    <!-- Player Name -->
-    <div class="name">
-      <b>Player Name </b> <span></span>
-    </div>
-    <!-- Timer -->
-    <div>
-      <span id="safeTimerDisplay">00:40</span>
-    </div>
-    <!-- Wrong Tries Counter -->
-    <div class="tries">
-      <b>Wrong Tries  </b><span>0</span>
-    </div>
-  </div>
-
-  <!--Main Game-->
-  <div class="memory-game-blocks">
-    <!-- 1 Animal Card -->
-    <div class="game-block" data-animal="Panda">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Panda.jpg" alt="">
-      </div>
-    </div>
-    <div class="game-block" data-animal="Panda">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Panda.jpg" alt="">
-      </div>
+    <!--Start Game Interface-->
+    <div class="control-buttons">
+        <p class="info">Playing memory games can improve other brain functions, such as attention, concentration, and focus. Memory games give space to critical thinking and that helps children nurture their attention to detail. </p>
+        <span>Start Game</span>
     </div>
 
-    <!-- 2 Animal Card -->
-    <div class="game-block" data-animal="Bear">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Bear.jpg" alt="">
-      </div>
-    </div>
-    <div class="game-block" data-animal="Bear">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Bear.jpg" alt="">
-      </div>
-    </div>
-
-    <!-- 3 Animal Card -->
-    <div class="game-block" data-animal="Tiger">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Tiger.jpg" alt="">
-      </div>
-    </div>
-    <div class="game-block" data-animal="Tiger">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Tiger.jpg" alt="">
-      </div>
+    <!--Inforamtion Bar-->
+    <div class="info-container">
+        <!-- Player Name -->
+        <div class="name">
+            <b>Player Name </b> <span></span>
+        </div>
+        <!-- Timer -->
+        <div>
+            <span id="safeTimerDisplay">00:40</span>
+        </div>
+        <!-- Wrong Tries Counter -->
+        <div class="tries">
+            <b>Wrong Tries  </b><span>0</span>
+        </div>
     </div>
 
-    <!-- 4 Animal Card -->
-    <div class="game-block" data-animal="Cat">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Cat.jpg" alt="">
-      </div>
-    </div>
-    <div class="game-block" data-animal="Cat">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Cat.jpg" alt="">
-      </div>
+    <!--Main Game-->
+    <div class="memory-game-blocks">
+        <!-- 1 Animal Card -->
+        <div class="game-block" data-animal="Panda">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Panda.jpg" alt="">
+            </div>
+        </div>
+        <div class="game-block" data-animal="Panda">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Panda.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- 2 Animal Card -->
+        <div class="game-block" data-animal="Bear">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Bear.jpg" alt="">
+            </div>
+        </div>
+        <div class="game-block" data-animal="Bear">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Bear.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- 3 Animal Card -->
+        <div class="game-block" data-animal="Tiger">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Tiger.jpg" alt="">
+            </div>
+        </div>
+        <div class="game-block" data-animal="Tiger">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Tiger.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- 4 Animal Card -->
+        <div class="game-block" data-animal="Cat">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Cat.jpg" alt="">
+            </div>
+        </div>
+        <div class="game-block" data-animal="Cat">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Cat.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- 5 Animal Card -->
+        <div class="game-block" data-animal="Whale">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Whale.jpg" alt="">
+            </div>
+        </div>
+        <div class="game-block" data-animal="Whale">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Whale.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- 6 Animal Card -->
+        <div class="game-block" data-animal="Elephant">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Elephant.jpg" alt="">
+            </div>
+        </div>
+        <div class="game-block" data-animal="Elephant">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Elephant.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- 7 Animal Card -->
+        <div class="game-block" data-animal="Pig">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Pig.jpg" alt="">
+            </div>
+        </div>
+        <div class="game-block" data-animal="Pig">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Pig.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- 8 Animal Card -->
+        <div class="game-block" data-animal="Monkey">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Monkey.jpg" alt="">
+            </div>
+        </div>
+        <div class="game-block" data-animal="Monkey">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Monkey.jpg" alt="">
+            </div>
+        </div>
+
+        <!-- 9 Animal Card -->
+        <div class="game-block" data-animal="Penguin">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Penguin.jpg" alt="">
+            </div>
+        </div>
+        <div class="game-block" data-animal="Penguin">
+            <div class="face front"></div>
+            <div class="face back">
+                <img src="image/Penguin.jpg" alt="">
+            </div>
+        </div>
     </div>
 
-    <!-- 5 Animal Card -->
-    <div class="game-block" data-animal="Whale">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Whale.jpg" alt="">
-      </div>
-    </div>
-    <div class="game-block" data-animal="Whale">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Whale.jpg" alt="">
-      </div>
-    </div>
+    <!--Audio-->
+    <audio id="success" src="audio/success.wav" preload="auto"></audio>
+    <audio id="fail" src="audio/failed.mp3" preload="auto"></audio>
 
-    <!-- 6 Animal Card -->
-    <div class="game-block" data-animal="Elephant">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Elephant.jpg" alt="">
-      </div>
-    </div>
-    <div class="game-block" data-animal="Elephant">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Elephant.jpg" alt="">
-      </div>
-    </div>
+    <!--SweetAlert Library-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Select The Start Game Button
+        document.querySelector(".control-buttons span").onclick = function() {
+            // Prompt Window To Ask For Name
+            let yourName = prompt("Whats Your Name?");
+            // If Name Is Empty
+            if (yourName == null || yourName == "") {
+                // Set Name To Unknown
+                document.querySelector(".name span").innerHTML = 'Unknown';
+                // Name Is Not Empty
+            } else {
+                // Set Name To Your Name
+                document.querySelector(".name span").innerHTML = yourName;
+            }
+            // Remove Splash Screen
+            document.querySelector(".control-buttons").remove();
 
-    <!-- 7 Animal Card -->
-    <div class="game-block" data-animal="Pig">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Pig.jpg" alt="">
-      </div>
-    </div>
-    <div class="game-block" data-animal="Pig">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Pig.jpg" alt="">
-      </div>
-    </div>
+            // Timer 30 Seconds
+            function timer() {
+                var sec = 40;
+                var timer = setInterval(function() {
+                    document.getElementById('safeTimerDisplay').innerHTML = '00:' + sec;
+                    sec--;
 
-    <!-- 8 Animal Card -->
-    <div class="game-block" data-animal="Monkey">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Monkey.jpg" alt="">
-      </div>
-    </div>
-    <div class="game-block" data-animal="Monkey">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Monkey.jpg" alt="">
-      </div>
-    </div>
+                    if (sec < 0) {
+                        clearInterval(timer);
+                        document.querySelector(".memory-game-blocks").style.pointerEvents = "none";
 
-    <!-- 9 Animal Card -->
-    <div class="game-block" data-animal="Penguin">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Penguin.jpg" alt="">
-      </div>
-    </div>
-    <div class="game-block" data-animal="Penguin">
-      <div class="face front"></div>
-      <div class="face back">
-        <img src="image/Penguin.jpg" alt="">
-      </div>
-    </div>
-  </div>
+                        Swal.fire({
+                            title: 'Game Over!',
+                            text: 'The time is out, try again.',
+                            footer: '<a href="index.html">Start</a>',
+                            showConfirmButton: false,
+                            imageUrl: 'image/alert.svg',
+                            color: '#eae0d7',
+                            background: 'rgb(201, 88, 23)'
+                        })
+                    }
+                }, 1000);
+            }
 
-  <!--Audio-->
-  <audio id="success" src="audio/success.wav" preload="auto"></audio>
-  <audio id="fail" src="audio/failed.mp3" preload="auto"></audio>
-    
-  <!--SweetAlert Library-->
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    // Select The Start Game Button
-document.querySelector(".control-buttons span").onclick = function () {
-    // Prompt Window To Ask For Name
-    let yourName = prompt("Whats Your Name?");
-    // If Name Is Empty
-    if (yourName == null || yourName == "") {
-      // Set Name To Unknown
-      document.querySelector(".name span").innerHTML = 'Unknown';
-    // Name Is Not Empty
-    } else {
-      // Set Name To Your Name
-      document.querySelector(".name span").innerHTML = yourName;
-    }
-    // Remove Splash Screen
-    document.querySelector(".control-buttons").remove();
-
-    // Timer 30 Seconds
-    function timer(){
-      var sec = 40;
-      var timer = setInterval(function(){
-          document.getElementById('safeTimerDisplay').innerHTML='00:'+sec;
-          sec--;
-
-          if (sec < 0) {
-              clearInterval(timer);
-              document.querySelector(".memory-game-blocks").style.pointerEvents = "none";
-
-              Swal.fire({
-                title: 'Game Over!',
-                text: 'The time is out, try again.',
-                footer: '<a href="index.html">Start</a>',
-                showConfirmButton: false,
-                imageUrl: 'image/alert.svg',
-                color:'#eae0d7',
-                background: 'rgb(201, 88, 23)'
-              })
-          }
-      }, 1000);
-  }
-
-  timer();
-  };
-  </script>
+            timer();
+        };
+    </script>
 </body>
+
 </html>
